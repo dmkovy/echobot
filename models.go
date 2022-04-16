@@ -22,3 +22,7 @@ type BotMessage struct {
 	ChatId int    `json:"chat_id"`
 	Text   string `json:"text"`
 }
+
+type ApiConfigData struct {
+	TelegramBotApiToken string `json:"TelegramBotApiToken"`
+}

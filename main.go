@@ -11,10 +11,14 @@ import (
 )
 
 func main() {
-	botToken := "5363483290:AAH9zw9DSH2iKz89F7abQyN4UPsSgK1M9l8"
+	botToken, err := loadApiConfig(".apiConfig")
+	if err != nil {
+		log.Println("Error Api key (bot token)",
+			err.Error())
+	}
 	// https://api.telegram.org/bot<token>/METHOD_NAME
 	botApi := "https://api.telegram.org/bot"
-	botUrl := botApi + botToken
+	botUrl := botApi + botToken.TelegramBotApiToken
 	offset := 0
 
 	for {
@@ -65,4 +69,21 @@ func respond(botUrl string, update Update) error {
 		return err
 	}
 	return nil
+}
+
+//чтение токена из файла
+func loadApiConfig(filename string) (ApiConfigData, error) {
+	b, err := ioutil.ReadFile(filename)
+
+	if err != nil {
+		return ApiConfigData{}, err
+	}
+	var c ApiConfigData
+
+	err = json.Unmarshal(b, &c)
+	if err != nil {
+		return ApiConfigData{}, err
+	}
+
+	return c, nil
 }
